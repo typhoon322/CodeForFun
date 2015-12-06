@@ -1,14 +1,16 @@
 package com.androidapp.yanx.testfloating.activity;
 
+import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.androidapp.yanx.testfloating.R;
 import com.androidapp.yanx.testfloating.adapter.MyBaseAdapter;
 import com.androidapp.yanx.testfloating.adapter.PictureListAdapter;
+import com.androidapp.yanx.testfloating.widget.DividerItemDecorator;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.ArrayList;
@@ -22,12 +24,11 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
  */
 public class PictureListActivity extends SwipeBackActivity {
 
-    RecyclerView recyclerView ;
+    RecyclerView recyclerView;
 
-    PictureListAdapter adapter ;
+    PictureListAdapter adapter;
 
-    ArrayList<String> urls = new ArrayList<>() ;
-
+    ArrayList<String> urls = new ArrayList<>();
 
 
     @Override
@@ -37,8 +38,9 @@ public class PictureListActivity extends SwipeBackActivity {
         setContentView(R.layout.acitivity_picture_list);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycle_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        adapter = new PictureListAdapter(this,urls) ;
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new DividerItemDecorator(this, DividerItemDecorator.VERTICAL_LIST));
+        adapter = new PictureListAdapter(this, urls);
         recyclerView.setAdapter(adapter);
 
         urls.add("http://img1.ph.126.net/bfrcm3gkDicrMrcGEp32zA==/6631426206491702935.jpg");
@@ -64,8 +66,23 @@ public class PictureListActivity extends SwipeBackActivity {
         adapter.setOnItemClickListener(new MyBaseAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view) {
-                Toast.makeText(getApplicationContext(),view.getTag().toString(),Toast.LENGTH_SHORT).show() ;
+                Intent intent = new Intent(getApplicationContext(), BigPictureActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("url", view.getTag().toString());
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
+    }
+
+    class MyDivider extends RecyclerView.ItemDecoration {
+        public MyDivider() {
+            super();
+        }
+
+        @Override
+        public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            super.onDraw(c, parent, state);
+        }
     }
 }
