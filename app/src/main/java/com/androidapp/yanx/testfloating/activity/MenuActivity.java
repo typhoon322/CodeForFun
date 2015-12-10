@@ -1,8 +1,8 @@
 package com.androidapp.yanx.testfloating.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -21,13 +21,13 @@ import java.util.ArrayList;
  * Created by yanx on 11/1/15 1:49 PM.
  * Description ${TODO}
  */
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends Activity {
 
     RecyclerViewHeader header_2;
     private RecyclerView recycleView;
-//    private View floatingView;
+    //    private View floatingView;
     private ArrayList<MenuListItemMdl> entrances = new ArrayList<>();
-    private RecyclerView.LayoutManager mLayoutManager ;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class MenuActivity extends AppCompatActivity {
         recycleView = (RecyclerView) findViewById(R.id.list_view);
 //        floatingView = findViewById(R.id.view_header);
 
-        mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false) ;
+        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         recycleView.setLayoutManager(mLayoutManager);
         RecyclerViewHeader header_1 = RecyclerViewHeader.fromXml(this, R.layout.layout_banner);
@@ -64,7 +64,7 @@ public class MenuActivity extends AppCompatActivity {
 
         });
 
-        entrances.add(new MenuListItemMdl(PictureListActivity.class,"PictureListDemo")) ;
+        entrances.add(new MenuListItemMdl(PictureListActivity.class, "PictureListDemo"));
 
         MenuAdapter adapter = new MenuAdapter(this, entrances);
 
@@ -76,11 +76,10 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void OnItemClick(View itemView) {
                 MenuListItemMdl itemMdl = (MenuListItemMdl) itemView.getTag();
-                Toast.makeText(getApplicationContext(),itemMdl.displayName,Toast.LENGTH_SHORT).show() ;
+                Toast.makeText(getApplicationContext(), itemMdl.displayName, Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), itemMdl.activity));
             }
         });
-
 
 
     }

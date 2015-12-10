@@ -1,11 +1,17 @@
 package com.androidapp.yanx.testfloating.activity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.AutoTransition;
+import android.transition.Scene;
+import android.transition.Transition;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.androidapp.yanx.testfloating.R;
 import com.androidapp.yanx.testfloating.adapter.MyBaseAdapter;
@@ -30,12 +36,19 @@ public class PictureListActivity extends SwipeBackActivity {
 
     ArrayList<String> urls = new ArrayList<>();
 
+    Scene mScene1;
+
+    Transition mTransition;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fresco.initialize(this);
         setContentView(R.layout.acitivity_picture_list);
+
+        mScene1 = new Scene((ViewGroup) findViewById(R.id.root_view));
+
 
         recyclerView = (RecyclerView) findViewById(R.id.recycle_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -66,11 +79,17 @@ public class PictureListActivity extends SwipeBackActivity {
         adapter.setOnItemClickListener(new MyBaseAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view) {
+
+                mTransition = new AutoTransition();
+                mTransition.setDuration(500);
+                mTransition.setInterpolator(new AccelerateDecelerateInterpolator());
+
                 Intent intent = new Intent(getApplicationContext(), BigPictureActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("url", view.getTag().toString());
                 intent.putExtras(bundle);
-                startActivity(intent);
+//                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(PictureListActivity.this).toBundle());
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(PictureListActivity.this, view.findViewById(R.id.iv_picture), "picture").toBundle());
             }
         });
     }

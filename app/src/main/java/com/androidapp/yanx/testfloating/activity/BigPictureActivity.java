@@ -1,8 +1,8 @@
 package com.androidapp.yanx.testfloating.activity;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 
 import com.androidapp.yanx.testfloating.R;
@@ -14,7 +14,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 /**
  * Created by pc on 2015/12/6.
  */
-public class BigPictureActivity extends AppCompatActivity {
+public class BigPictureActivity extends Activity {
 
     SimpleDraweeView photoView;
 
@@ -40,5 +40,11 @@ public class BigPictureActivity extends AppCompatActivity {
             photoView.setImageURI(Uri.parse(url));
             mAttacher.update();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAfterTransition();
     }
 }
