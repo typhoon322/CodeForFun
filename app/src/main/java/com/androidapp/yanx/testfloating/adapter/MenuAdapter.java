@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
 import com.androidapp.yanx.testfloating.R;
 import com.androidapp.yanx.testfloating.entity.MenuListItemMdl;
@@ -46,9 +46,9 @@ public class MenuAdapter extends MyBaseAdapter {
         MenuListItemMdl menuItem = dataList.get(position);
         if (menuItem != null) {
             ((Holder) holder).tvName.setText(menuItem.displayName);
-            holder.itemView.setTag(menuItem);
+            ((Holder) holder).tvName.setTag(menuItem);
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            ((Holder) holder).tvName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (onItemClickListener != null) {
@@ -71,11 +71,11 @@ public class MenuAdapter extends MyBaseAdapter {
 
 
     class Holder extends RecyclerView.ViewHolder {
-        public TextView tvName;
+        public Button tvName;
 
         public Holder(View itemView) {
             super(itemView);
-            tvName = (TextView) itemView.findViewById(R.id.tvName);
+            tvName = (Button) itemView.findViewById(R.id.tvName);
         }
     }
 

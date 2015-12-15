@@ -3,10 +3,10 @@ package com.androidapp.yanx.testfloating.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.androidapp.yanx.testfloating.R;
 import com.androidapp.yanx.testfloating.adapter.MenuAdapter;
@@ -64,11 +64,12 @@ public class MenuActivity extends Activity {
 
         });
 
-        entrances.add(new MenuListItemMdl(PictureListActivity.class, "PictureListDemo"));
+        entrances.add(new MenuListItemMdl(PictureListActivity.class, "Picture List Demo"));
 
         MenuAdapter adapter = new MenuAdapter(this, entrances);
 
         recycleView.setAdapter(adapter);
+        recycleView.setItemAnimator(new DefaultItemAnimator());
 
         adapter.notifyDataSetChanged();
 
@@ -76,7 +77,6 @@ public class MenuActivity extends Activity {
             @Override
             public void OnItemClick(View itemView) {
                 MenuListItemMdl itemMdl = (MenuListItemMdl) itemView.getTag();
-                Toast.makeText(getApplicationContext(), itemMdl.displayName, Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), itemMdl.activity));
             }
         });

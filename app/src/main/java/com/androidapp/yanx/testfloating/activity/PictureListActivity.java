@@ -2,13 +2,16 @@ package com.androidapp.yanx.testfloating.activity;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.transition.AutoTransition;
 import android.transition.Scene;
 import android.transition.Transition;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -16,19 +19,19 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import com.androidapp.yanx.testfloating.R;
 import com.androidapp.yanx.testfloating.adapter.MyBaseAdapter;
 import com.androidapp.yanx.testfloating.adapter.PictureListAdapter;
-import com.androidapp.yanx.testfloating.widget.DividerItemDecorator;
+import com.androidapp.yanx.testfloating.widget.SpacesItemDecorator;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.ArrayList;
-
-import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 /**
  * com.androidapp.yanx.testfloating
  * Created by yanx on 12/5/15 6:55 PM.
  * Description ${TODO}
  */
-public class PictureListActivity extends SwipeBackActivity {
+public class PictureListActivity extends AppCompatActivity {
+
+    Toolbar toolBar;
 
     RecyclerView recyclerView;
 
@@ -41,18 +44,37 @@ public class PictureListActivity extends SwipeBackActivity {
     Transition mTransition;
 
 
+    private void addPicture() {
+        urls.add(2, "http://img1.ph.126.net/6AIC3r51awuw56hxJW04ww==/6630176061770622457.jpg");
+        adapter.notifyItemInserted(2);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 1:
+                addPicture();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fresco.initialize(this);
         setContentView(R.layout.acitivity_picture_list);
 
+        toolBar = (Toolbar) findViewById(R.id.toolbar);
+        toolBar.setTitle("Picture List Demo");
+        setSupportActionBar(toolBar);
+
         mScene1 = new Scene((ViewGroup) findViewById(R.id.root_view));
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recycle_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        recyclerView.addItemDecoration(new DividerItemDecorator(this, DividerItemDecorator.VERTICAL_LIST));
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.addItemDecoration(new SpacesItemDecorator(20));
         adapter = new PictureListAdapter(this, urls);
         recyclerView.setAdapter(adapter);
 
@@ -94,14 +116,11 @@ public class PictureListActivity extends SwipeBackActivity {
         });
     }
 
-    class MyDivider extends RecyclerView.ItemDecoration {
-        public MyDivider() {
-            super();
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-        @Override
-        public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-            super.onDraw(c, parent, state);
-        }
+        menu.add(1,1,1,"Add Picture") ;
+
+        return super.onCreateOptionsMenu(menu);
     }
 }

@@ -8,7 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="BaseAppTheme" parent="android:Theme.Material">
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
         <!-- enable window content transitions -->
         <item name="android:windowContentTransitions">true</item>
         <!-- specify enter and exit transitions -->

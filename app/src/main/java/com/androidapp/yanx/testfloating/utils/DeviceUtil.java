@@ -1,6 +1,7 @@
 package com.androidapp.yanx.testfloating.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
 /**
@@ -14,5 +15,14 @@ public class DeviceUtil {
         }
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         return new int[]{metrics.widthPixels, metrics.heightPixels};
+    }
+
+    /**
+     * 密度
+     */
+    public static final float DENSITY = Resources.getSystem().getDisplayMetrics().density;
+
+    public static int dp2px(int dp) {
+        return Math.round(dp * DENSITY);
     }
 }
