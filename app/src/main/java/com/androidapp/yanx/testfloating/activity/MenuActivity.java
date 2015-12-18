@@ -64,7 +64,7 @@ public class MenuActivity extends Activity {
 
         });
 
-        entrances.add(new MenuListItemMdl(PictureListActivity.class, "Picture List Demo"));
+        entrances.add(new MenuListItemMdl(PictureListActivity_SwipeRefreshLayout.class, "Picture List Demo"));
 
         MenuAdapter adapter = new MenuAdapter(this, entrances);
 

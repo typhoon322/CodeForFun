@@ -28,6 +28,9 @@
         <activity
             android:name=".activity.BigPictureActivity"
             android:configChanges="keyboardHidden|orientation"/>
+        <activity
+            android:name=".activity.PictureListActivity_SwipeRefreshLayout"
+            android:screenOrientation="portrait"/>
 
     </application>
 

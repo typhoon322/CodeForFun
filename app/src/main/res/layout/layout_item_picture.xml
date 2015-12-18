@@ -4,20 +4,21 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:orientation="vertical">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/iv_picture"
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:layout_centerInParent="true"
-        android:transitionName="picture"
+        android:layout_centerHorizontal="true"
         android:elevation="8dp"
+        android:transitionName="picture"
         android:translationZ="10dp"
         fresco:actualImageScaleType="focusCrop"
-        fresco:pressedStateOverlayImage="@drawable/on_touch_drawable"
         fresco:placeholderImage="@color/wait_color"
-        fresco:placeholderImageScaleType="fitCenter"/>
+        fresco:placeholderImageScaleType="fitCenter"
+        fresco:pressedStateOverlayImage="@drawable/on_touch_drawable"/>
 
     <TextView
         android:id="@+id/tv_title"
@@ -25,8 +26,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_picture"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:elevation="5dp"
         android:textColor="@color/colorPrimaryDark"
         tools:text="Title"/>

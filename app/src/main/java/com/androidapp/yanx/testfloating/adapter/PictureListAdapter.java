@@ -31,7 +31,8 @@ public class PictureListAdapter extends MyBaseAdapter {
         mContext = context;
         setUrls(list);
         inflater = LayoutInflater.from(context);
-        layoutParams = new RelativeLayout.LayoutParams(DeviceUtil.getScreenSize(mContext)[0] / 2, DeviceUtil.getScreenSize(mContext)[0] / 2);
+        layoutParams = new RelativeLayout.LayoutParams((int) (DeviceUtil.getScreenSize(mContext)[0] * 0.9), DeviceUtil.getScreenSize(mContext)[0] / 2);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
     }
 
     private void setUrls(ArrayList<String> list) {
@@ -41,27 +42,55 @@ public class PictureListAdapter extends MyBaseAdapter {
         urls = list;
     }
 
+    final static int ITEM_HEADER = 1;
+    final static int ITEM_NORMAL = 0;
+    final static int ITEM_FOOTER = 2;
+
+    @Override
+    public int getItemViewType(int position) {
+        if ("header".equals(urls.get(position))) {
+            return ITEM_HEADER;
+        } else if ("footer".equals(urls.get(position))) {
+            return ITEM_FOOTER;
+        } else {
+            return ITEM_NORMAL;
+        }
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View rootView = inflater.inflate(R.layout.layout_item_picture, parent, false);
-        Holder holder = new Holder(rootView);
-        return holder;
+        switch (viewType) {
+            case ITEM_HEADER:
+                return new HeaderHolder(inflater.inflate(R.layout.header_layout, parent, false));
+            case ITEM_NORMAL:
+                return new ItemHolder(inflater.inflate(R.layout.layout_item_picture, parent, false));
+            case ITEM_FOOTER:
+                return new FooterHolder(inflater.inflate(R.layout.footer_layout, parent, false));
+            default:
+                throw new RuntimeException("No type matches!!");
+        }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        String url = urls.get(position);
-        ((Holder) holder).ivPicture.setImageURI(Uri.parse(url));
-        holder.itemView.setTag(url);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onItemClickListener != null) {
-                    onItemClickListener.OnItemClick(v);
+        if (holder instanceof ItemHolder) {
+            String url = urls.get(position);
+            ((ItemHolder) holder).ivPicture.setImageURI(Uri.parse(url));
+            holder.itemView.setTag(url);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemClickListener != null) {
+                        onItemClickListener.OnItemClick(v);
+                    }
                 }
-            }
-        });
-        ((Holder) holder).tvTitle.setText("This is picture "+(position+1));
+            });
+            ((ItemHolder) holder).tvTitle.setText("This is picture " + (position + 1));
+        } else if (holder instanceof HeaderHolder) {
+            ((HeaderHolder) holder).tvTitle.setText("This is HEADER");
+        } else if (holder instanceof FooterHolder) {
+            ((FooterHolder) holder).tvTitle.setText("正在努力加载...");
+        }
     }
 
     @Override
@@ -69,16 +98,35 @@ public class PictureListAdapter extends MyBaseAdapter {
         return urls.size();
     }
 
-    class Holder extends RecyclerView.ViewHolder {
+    class ItemHolder extends RecyclerView.ViewHolder {
 
         SimpleDraweeView ivPicture;
         TextView tvTitle;
 
-        public Holder(View itemView) {
+        public ItemHolder(View itemView) {
             super(itemView);
             ivPicture = (SimpleDraweeView) itemView.findViewById(R.id.iv_picture);
             ivPicture.setLayoutParams(layoutParams);
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
+        }
+    }
+
+    class HeaderHolder extends RecyclerView.ViewHolder {
+
+        TextView tvTitle;
+
+        public HeaderHolder(View itemView) {
+            super(itemView);
+            tvTitle = (TextView) itemView.findViewById(R.id.tv_header);
+        }
+    }
+
+    class FooterHolder extends RecyclerView.ViewHolder {
+        TextView tvTitle;
+
+        public FooterHolder(View itemView) {
+            super(itemView);
+            tvTitle = (TextView) itemView.findViewById(R.id.tv_footer);
         }
     }
 }
