@@ -16,6 +16,8 @@ import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 
 import java.util.ArrayList;
 
+import testwave.WaveActivity;
+
 /**
  * com.androidapp.yanx.testfloating
  * Created by yanx on 11/1/15 1:49 PM.
@@ -65,6 +67,8 @@ public class MenuActivity extends Activity {
         });
 
         entrances.add(new MenuListItemMdl(PictureListActivity_SwipeRefreshLayout.class, "Picture List Demo"));
+        entrances.add(new MenuListItemMdl(WaveActivity.class, "Wave Test"));
+        entrances.add(new MenuListItemMdl(VerticalViewPagerActivity.class, "Vertical View Pager"));
 
         MenuAdapter adapter = new MenuAdapter(this, entrances);
 
@@ -82,5 +86,10 @@ public class MenuActivity extends Activity {
         });
 
 
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
     }
 }

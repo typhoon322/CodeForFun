@@ -31,6 +31,12 @@
         <activity
             android:name=".activity.PictureListActivity_SwipeRefreshLayout"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name="testwave.WaveActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.VerticalViewPagerActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 

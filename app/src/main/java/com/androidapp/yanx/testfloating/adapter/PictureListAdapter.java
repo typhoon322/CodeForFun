@@ -1,6 +1,7 @@
 package com.androidapp.yanx.testfloating.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +12,11 @@ import android.widget.TextView;
 
 import com.androidapp.yanx.testfloating.R;
 import com.androidapp.yanx.testfloating.utils.DeviceUtil;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.image.ImageInfo;
 
 import java.util.ArrayList;
 
@@ -31,8 +36,7 @@ public class PictureListAdapter extends MyBaseAdapter {
         mContext = context;
         setUrls(list);
         inflater = LayoutInflater.from(context);
-        layoutParams = new RelativeLayout.LayoutParams((int) (DeviceUtil.getScreenSize(mContext)[0] * 0.9), DeviceUtil.getScreenSize(mContext)[0] / 2);
-        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
     }
 
     private void setUrls(ArrayList<String> list) {
@@ -72,10 +76,10 @@ public class PictureListAdapter extends MyBaseAdapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemHolder) {
             String url = urls.get(position);
-            ((ItemHolder) holder).ivPicture.setImageURI(Uri.parse(url));
+//            ((ItemHolder) holder).ivPicture.setImageURI();
             holder.itemView.setTag(url);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -85,7 +89,39 @@ public class PictureListAdapter extends MyBaseAdapter {
                     }
                 }
             });
-            ((ItemHolder) holder).tvTitle.setText("This is picture " + (position + 1));
+            final RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) ((ItemHolder) holder).ivPicture.getTag();
+
+            final int index = position;
+            DraweeController controller = Fresco.newDraweeControllerBuilder().setUri(Uri.parse(url)).setControllerListener(new BaseControllerListener<ImageInfo>() {
+                @Override
+                public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
+                    super.onFinalImageSet(id, imageInfo, animatable);
+                    float factor = imageInfo.getHeight() * 1.0f / imageInfo.getWidth() * 1.0f;
+                    layoutParams.height = (int) (layoutParams.width * factor);
+                    ((ItemHolder) holder).ivPicture.setLayoutParams(layoutParams);
+                    ((ItemHolder) holder).tvTitle.setText("ID:" + id);
+                    ((ItemHolder) holder).tvTitle.append("\n");
+                    ((ItemHolder) holder).tvTitle.append("This is picture " + index);
+                    ((ItemHolder) holder).tvTitle.append("\n");
+                    ((ItemHolder) holder).tvTitle.append(imageInfo.getWidth() + "_" + imageInfo.getHeight());
+                    ((ItemHolder) holder).tvTitle.append("\n");
+                    ((ItemHolder) holder).tvTitle.append("isOfFullQuality : " + imageInfo.getQualityInfo().isOfFullQuality() + ", isOfGoodEnoughQuality : " + imageInfo.getQualityInfo().isOfGoodEnoughQuality());
+                }
+
+
+                @Override
+                public void onFailure(String id, Throwable throwable) {
+                    super.onFailure(id, throwable);
+                    ((ItemHolder) holder).tvTitle.setText("ID:" + id);
+                    ((ItemHolder) holder).tvTitle.append("\n");
+                    ((ItemHolder) holder).tvTitle.append("This is picture " + index);
+                    ((ItemHolder) holder).tvTitle.append("\n");
+                    ((ItemHolder) holder).tvTitle.append("Load picture fail!!!");
+                }
+            }).build();
+            ((ItemHolder) holder).ivPicture.setController(controller);
+
+
         } else if (holder instanceof HeaderHolder) {
             ((HeaderHolder) holder).tvTitle.setText("This is HEADER");
         } else if (holder instanceof FooterHolder) {
@@ -105,9 +141,12 @@ public class PictureListAdapter extends MyBaseAdapter {
 
         public ItemHolder(View itemView) {
             super(itemView);
+            layoutParams = new RelativeLayout.LayoutParams((int) (DeviceUtil.getScreenSize(mContext)[0] * 0.7), DeviceUtil.getScreenSize(mContext)[0] / 2);
+            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
             ivPicture = (SimpleDraweeView) itemView.findViewById(R.id.iv_picture);
             ivPicture.setLayoutParams(layoutParams);
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
+            ivPicture.setTag(layoutParams);
         }
     }
 
