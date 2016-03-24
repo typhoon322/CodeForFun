@@ -69,6 +69,8 @@ public class MenuActivity extends Activity {
         entrances.add(new MenuListItemMdl(PictureListActivity_SwipeRefreshLayout.class, "Picture List Demo"));
         entrances.add(new MenuListItemMdl(WaveActivity.class, "Wave Test"));
         entrances.add(new MenuListItemMdl(VerticalViewPagerActivity.class, "Vertical View Pager"));
+        entrances.add(new MenuListItemMdl(MomentActivity.class, "Moment Test Act 1(adapter)"));
+        entrances.add(new MenuListItemMdl(MomentActivityType.class, "Moment Test Act 2(type)"));
 
         MenuAdapter adapter = new MenuAdapter(this, entrances);
 
